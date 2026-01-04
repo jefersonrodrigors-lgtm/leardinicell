@@ -1,70 +1,50 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Leardinicell - Sistema de Caixa</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #0f172a;
-            color: #fff;
-        }
-        header {
-            background: linear-gradient(90deg, #2563eb, #22d3ee);
-            padding: 20px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        main {
-            padding: 20px;
-        }
-        .card {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            background: #22c55e;
-            color: #000;
-            margin-top: 10px;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>LEARDINICELL 💰 Caixa</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 { color: #00ff99; }
+    button {
+      margin: 10px;
+      padding: 15px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .venda { background: #00ff99; }
+    .entrada { background: #3399ff; }
+    .saida { background: #ff5555; }
+    .card {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    LEARDINICELL 💰
-</header>
+  <h1>LEARDINICELL 💰</h1>
+  <h2>📱 Sistema de Caixa</h2>
+  <p>Bem-vindo ao sistema de caixa da Leardinicell.</p>
 
-<main>
-    <div class="card">
-        <h2>📱 Sistema de Caixa</h2>
-        <p>Bem-vindo ao sistema de caixa da Leardinicell.</p>
-        <button>Nova Venda</button>
-        <button>Entrada</button>
-        <button>Saída</button>
-    </div>
+  <button class="venda">Nova Venda</button>
+  <button class="entrada">Entrada</button>
+  <button class="saida">Saída</button>
 
-    <div class="card">
-        <h2>📊 Relatório Diário</h2>
-        <p>Total do dia: <strong>R$ 0,00</strong></p>
-    </div>
-</main>
+  <div class="card">
+    <h3>📊 Relatório Diário</h3>
+    <p>Total do dia: <strong>R$ 0,00</strong></p>
+  </div>
 
 </body>
 </html>
-
