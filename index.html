@@ -1,50 +1,167 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>LEARDINICELL 💰 Caixa</title>
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 { color: #00ff99; }
-    button {
-      margin: 10px;
-      padding: 15px 25px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .venda { background: #00ff99; }
-    .entrada { background: #3399ff; }
-    .saida { background: #ff5555; }
-    .card {
-      background: #222;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Leardinicell - Sistema de Caixa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin:0;font-family:Arial;background:#0f172a;color:#e5e7eb}
+header{background:#020617;padding:15px;text-align:center}
+nav{display:flex;gap:10px;padding:10px;background:#020617;flex-wrap:wrap;justify-content:center}
+button{padding:10px;border:none;border-radius:8px;background:#2563eb;color:white;font-weight:bold;cursor:pointer}
+button:hover{background:#1d4ed8}
+.card{background:#020617;margin:10px;padding:15px;border-radius:10px;display:none}
+input,select{width:100%;padding:10px;margin:5px 0;border-radius:6px;border:none}
+h2{margin-top:0}
+ul{padding-left:15px}
+</style>
 </head>
+
 <body>
 
-  <h1>LEARDINICELL 💰</h1>
-  <h2>📱 Sistema de Caixa</h2>
-  <p>Bem-vindo ao sistema de caixa da Leardinicell.</p>
+<header>
+<h1>📱 LEARDINICELL</h1>
+<p>Usuário: <span id="usuarioAtual"></span></p>
+</header>
 
-  <button class="venda">Nova Venda</button>
-  <button class="entrada">Entrada</button>
-  <button class="saida">Saída</button>
+<div id="login" class="card" style="display:block">
+<h2>🔐 Login</h2>
+<select id="loginUser">
+<option value="Jeferson">Jeferson</option>
+<option value="Carina">Carina</option>
+</select>
+<input type="password" id="loginSenha" placeholder="Senha 4 dígitos">
+<button onclick="entrar()">Entrar</button>
+</div>
 
-  <div class="card">
-    <h3>📊 Relatório Diário</h3>
-    <p>Total do dia: <strong>R$ 0,00</strong></p>
-  </div>
+<nav id="menu" style="display:none">
+<button onclick="mostrar('caixa')">💰 Caixa</button>
+<button onclick="mostrar('produtos')">📦 Produtos</button>
+<button onclick="mostrar('clientes')">👥 Clientes</button>
+<button onclick="mostrar('os')">🛠️ OS</button>
+<button onclick="mostrar('relatorios')">📊 Relatórios</button>
+</nav>
+
+<section id="caixa" class="card">
+<h2>💰 Caixa</h2>
+<select id="item"></select>
+<select id="cliente"></select>
+<input type="number" id="valor" placeholder="Valor">
+<select id="pagamento">
+<option>Dinheiro</option>
+<option>Pix</option>
+<option>Cartão</option>
+<option>Fiado</option>
+</select>
+<button onclick="vender()">Finalizar Venda</button>
+<p>Total do dia: R$ <span id="totalDia">0</span></p>
+</section>
+
+<section id="produtos" class="card">
+<h2>📦 Produtos</h2>
+<input id="prodNome" placeholder="Nome">
+<input id="prodQtd" type="number" placeholder="Quantidade">
+<input id="prodCusto" type="number" placeholder="Custo">
+<input id="prodPreco" type="number" placeholder="Preço">
+<button onclick="addProduto()">Salvar</button>
+<ul id="listaProdutos"></ul>
+</section>
+
+<section id="clientes" class="card">
+<h2>👥 Clientes</h2>
+<input id="cliNome" placeholder="Nome">
+<input id="cliTel" placeholder="Telefone">
+<button onclick="addCliente()">Salvar</button>
+<ul id="listaClientes"></ul>
+</section>
+
+<section id="os" class="card">
+<h2>🛠️ Ordem de Serviço</h2>
+<select id="osCliente"></select>
+<input id="osAparelho" placeholder="Aparelho">
+<input id="osDefeito" placeholder="Defeito">
+<input id="osSenha" placeholder="Senha do aparelho">
+<input id="osValor" type="number" placeholder="Valor">
+<button onclick="addOS()">Salvar OS</button>
+<ul id="listaOS"></ul>
+</section>
+
+<section id="relatorios" class="card">
+<h2>📊 Relatórios</h2>
+<p>Total vendido: R$ <span id="relTotal">0</span></p>
+</section>
+
+<script>
+let usuario="";
+let total=0;
+
+let produtos=JSON.parse(localStorage.getItem("produtos")||"[]");
+let clientes=JSON.parse(localStorage.getItem("clientes")||"[]");
+let vendas=JSON.parse(localStorage.getItem("vendas")||"[]");
+let osList=JSON.parse(localStorage.getItem("os")||"[]");
+
+function entrar(){
+let u=document.getElementById("loginUser").value;
+let s=document.getElementById("loginSenha").value;
+if((u==="Jeferson"&&s==="1234")||(u==="Carina"&&s==="4321")){
+usuario=u;
+document.getElementById("usuarioAtual").innerText=u;
+login.style.display="none";
+menu.style.display="flex";
+mostrar("caixa");
+}else alert("Senha incorreta");
+}
+
+function mostrar(id){
+document.querySelectorAll(".card").forEach(c=>c.style.display="none");
+document.getElementById(id).style.display="block";
+}
+
+function salvar(){
+localStorage.setItem("produtos",JSON.stringify(produtos));
+localStorage.setItem("clientes",JSON.stringify(clientes));
+localStorage.setItem("vendas",JSON.stringify(vendas));
+localStorage.setItem("os",JSON.stringify(osList));
+}
+
+function atualizar(){
+item.innerHTML=produtos.map((p,i)=>`<option value="${i}">${p.nome}</option>`).join("");
+cliente.innerHTML=clientes.map(c=>`<option>${c.nome}</option>`).join("");
+osCliente.innerHTML=cliente.innerHTML;
+listaProdutos.innerHTML=produtos.map(p=>`<li>${p.nome} (${p.qtd})</li>`).join("");
+listaClientes.innerHTML=clientes.map(c=>`<li>${c.nome}</li>`).join("");
+listaOS.innerHTML=osList.map(o=>`<li>${o.cliente} - ${o.aparelho}</li>`).join("");
+totalDia.innerText=total.toFixed(2);
+relTotal.innerText=total.toFixed(2);
+salvar();
+}
+
+function addProduto(){
+produtos.push({nome:prodNome.value,qtd:+prodQtd.value,custo:+prodCusto.value,preco:+prodPreco.value});
+atualizar();
+}
+
+function addCliente(){
+clientes.push({nome:cliNome.value,tel:cliTel.value});
+atualizar();
+}
+
+function vender(){
+let p=produtos[item.value];
+if(p.qtd<=0){alert("Sem estoque");return;}
+p.qtd--;
+total+=+valor.value;
+vendas.push({valor:+valor.value,usuario});
+atualizar();
+}
+
+function addOS(){
+osList.push({cliente:osCliente.value,aparelho:osAparelho.value});
+atualizar();
+}
+
+atualizar();
+</script>
 
 </body>
 </html>
